@@ -1,0 +1,59 @@
+@mixin nav-link {
+    &:focus {
+        outline: none;
+    }
+    text-decoration: none;
+    color: $offwhite;
+    transition: .3s;
+    border-bottom: 2px solid transparent;
+}
+
+@mixin nav-link-hover {
+    color: $offwhite;
+    letter-spacing: 3px;
+    font-weight: 900;
+    border-bottom-color: $offwhite;
+}
+
+@mixin nav-link-active {
+    @include nav-link-hover();
+    color: $gold;
+    border-bottom-color: $gold;
+    &:hover {
+        @include nav-link-hover();
+        color: $gold;
+        border-bottom-color: $gold;
+    }
+}
+
+@mixin link-3 {
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+        color: $gold;
+    }
+}
+
+@mixin link-5 {
+    cursor: pointer;
+    transition: .5s;
+    &:hover {
+        color: $gold;
+    }
+}
+
+@mixin titillium-web {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+@mixin roboto-slab {
+    font-family: 'Roboto Slab', serif;
+}
+
+@mixin ubuntu-condensed {
+    font-family: "Ubuntu Condensed", sans-serif;
+}
+
+@mixin roboto {
+    font-family: "Roboto", sans-serif;
+}
