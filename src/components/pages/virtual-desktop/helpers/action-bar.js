@@ -5,7 +5,12 @@ export default function(props) {
         <div className={`action-item${props.closeOnClick ? " close-on-click" : ""}`} >
             <div className="action-name">{props.title}</div>
 
-            <div className="actions-list">
+            <div className="actions-list" style={
+                    props.cols ? {
+                        overflowY: 'auto',
+                        maxHeight: `${18 * props.cols}px`
+                    } : {}}
+                >
                 {
                     props.actions.map(
                         action => (

@@ -1,22 +1,34 @@
 import React, { Component } from 'react';
 
-import { Apps } from './data';
+// Apps requirements
+import NotepadIcon from "../../../../static/images/virtual-desktop/apps/notepad.png";
+import Notepad from "./apps/notepad";
+
 import RenderApps from "./apps";
 import Window from "./window";
 
 export default class VirtualDesktop extends Component {
     constructor(props) {
         super(props);
+        
+        this.openApp = this.openApp.bind(this);
+        this.closeApp = this.closeApp.bind(this);
 
         this.state = {
             windowIsOpen: false,
             openApp: {
 
-            }
+            },
+
+            apps: [
+                {
+                    name: "Notepad",
+                    icon: NotepadIcon,
+                    content: <Notepad closeApp={this.closeApp} />
+                }
+            ]
         }
 
-        this.openApp = this.openApp.bind(this);
-        this.closeApp = this.closeApp.bind(this);
     }
 
     openApp(app) {
@@ -39,7 +51,7 @@ export default class VirtualDesktop extends Component {
         return (
             <div className='virtual-desktop-site'>     
                 <div className="apps">
-                    <RenderApps apps={Apps} openApp={this.openApp} />
+                    <RenderApps apps={this.state.apps} openApp={this.openApp} />
                 </div>
 
                 {this.state.windowIsOpen ? <Window app={this.state.openApp} closeApp={this.closeApp} /> : null}

@@ -30,9 +30,7 @@
                     }
                 }
     
-                .left {
-                    width: 50%;
-    
+                .left {    
                     .icon-wrapper img {
                         width: 40px;
                         -webkit-user-drag: none;
@@ -41,6 +39,9 @@
                 }
     
                 .center {
+                    width: 100%;
+                    text-align: center;
+
                     h1 {
                         font-weight: 200;
                         margin: 0;
@@ -49,7 +50,6 @@
                 }
     
                 .right {
-                    width: 50%;
                     display: flex;
                     justify-content: right;
                     height: 100%;

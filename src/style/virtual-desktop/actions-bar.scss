@@ -15,7 +15,7 @@
 
         &:hover {
             border-color: #cbcbcb;
-            .actions-list {
+            > .actions-list {
                 display: block;
 
                 // &:is(.close-on-click):active {
@@ -27,6 +27,11 @@
                 display: none;
             }
         }
+
+        // &:is(.auto-height) .actions-list {
+        //     max-height: calc(18px * 8);
+        //     overflow-y: auto;
+        // }
 
         .actions-list {
             position: absolute;

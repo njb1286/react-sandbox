@@ -24,6 +24,7 @@ export default class Notepad extends Component {
 
         this.handleSaveAs = this.handleSaveAs.bind(this);
         this.changeItem = this.changeItem.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     range(start, end) {
@@ -59,6 +60,10 @@ export default class Notepad extends Component {
         return val === on ? off : on;
     } 
 
+    handleSave() {
+        this.changeItem('text', this.state.text);
+    }
+
     handleSaveAs() {
         this.props.openSaveFile(this.state.text);
         this.props.closeApp();
@@ -72,27 +77,28 @@ export default class Notepad extends Component {
                 height: "100%"
             }}>
                 <div className="actions-bar">
-                    {/* <ActionBar title="File" actions={[
-                            <div onMouseDown={() => {
-                                this.changeItem('text', this.state.text);
-                            }}>Save</div>,
-                            <div onMouseDown={this.handleSaveAs}>Save As</div>,
-                            <div>Save To File</div>,
-                            <div onMouseDown={() => document.querySelector('.close-wrapper').click()}>Close</div>,
-                        ]}
-                        closeOnClick 
-                    /> */}
-
                     <ActionBar 
                         title="File" 
                         actions={[
-                            <ButtonSwitch 
-                                content={
-                                    <div>Save</div>
-                                }
-                            />
+                            <div onMouseDown={this.handleSave}>Save</div>,
+                            <div onMouseDown={this.handleSaveAs}>Save As</div>,
+                            <div>Save To File</div>,
+                            <div onMouseDown={this.props.closeApp}>Close</div>
                         ]}
                         closeOnClick
+                    />
+
+                    <ActionBar 
+                        title="Styles"
+                        actions={[
+                            <ActionBar 
+                                title="Font Size"
+                                actions={
+                                    this.range(0, 99).map(e => <div key={e}>{e}px</div>)
+                                }
+                                cols={8}
+                            />
+                        ]}
                     />
                 </div>
                 
