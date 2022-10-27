@@ -21,7 +21,7 @@ export default class ButtonSwitch extends Component {
 
     toggleSwitch(func, target) {
         this.setState({
-            on: this.state.on ? false : true
+            on: !this.state.on
         },
             !this.state.on && func ? func(target, !this.state.on) : null
         )

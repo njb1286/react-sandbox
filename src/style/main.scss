@@ -13,3 +13,7 @@
 .virtual-desktop-site {
     @import "./virtual-desktop/main.scss";
 }
+
+body:has(.command-generator) {
+    @import './command-generator/main.scss';
+}

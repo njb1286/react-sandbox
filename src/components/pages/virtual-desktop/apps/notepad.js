@@ -94,7 +94,24 @@ export default class Notepad extends Component {
                             <ActionBar 
                                 title="Font Size"
                                 actions={
-                                    this.range(0, 99).map(e => <div key={e}>{e}px</div>)
+                                    this.range(0, 99).map(e => (
+                                        // <ButtonSwitch 
+                                        //     key={e} 
+                                        //     content={<div>{e}px</div>} 
+                                        //     on={e === this.state.fontSize ? true : false} 
+                                        // />
+                                        <div 
+                                            key={e} 
+                                            onMouseDown={() => this.changeItem('fontSize', e)} 
+                                            style={
+                                                this.state.fontSize === e ? {
+                                                    backgroundColor: "#dbdbdb"
+                                                } : {}
+                                            }
+                                        >
+                                        {e}px
+                                        </div>
+                                    ))
                                 }
                                 cols={8}
                             />
