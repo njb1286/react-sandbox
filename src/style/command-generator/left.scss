@@ -1,0 +1,47 @@
+.left {
+    border-right: 2px solid black;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .actions-bar-wrapper {
+        display: flex;
+        justify-content: center;
+        background-color: gray;
+
+        .actions-bar {    
+            width: 70%;
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            justify-content: center;
+
+            .top {
+                display: flex;
+                justify-content: center;
+            }
+
+            .bottom {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 22px;
+            }
+
+            .create-icon-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 110px;
+                height: 110px;
+                cursor: pointer;
+                user-select: none;
+                border-radius: 5px;
+                color: $off-black;
+
+                &:hover {
+                    background-color: $gray;
+                    color: gold;
+                }
+            }
+        }
+    }
+}

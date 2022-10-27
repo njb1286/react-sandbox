@@ -1,0 +1,50 @@
+.command {
+    .main {
+        display: grid;
+        height: 100px;
+        grid-template-columns: 1fr 4fr 1fr;
+        align-items: center;
+        cursor: pointer;
+
+        .cmd-icon-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .command-name {
+            height: 25px;
+            font-size: 25px;
+            overflow: hidden;
+            text-align: center;
+            border: none;
+            outline: none;
+            background-color: #e4e4e4;
+            border-radius: 15px;
+
+            &:focus {
+                outline: 2px solid gray;
+                background-color: #cbcbcb;
+            }
+        }
+
+        .delete-icon-wrapper {
+            opacity: 0;
+            display: flex;
+            justify-content: center;
+
+            .delete-icon {
+                font-size: 40px;
+                color: $off-black;
+                cursor: pointer;
+
+                &:hover {
+                    color: $warning;
+                }
+            }
+        }
+
+        &:hover .delete-icon-wrapper {
+            opacity: 1;
+        }
+    }
+}
