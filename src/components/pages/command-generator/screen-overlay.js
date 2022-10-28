@@ -1,29 +1,29 @@
 import React, { Component } from 'react';
 
-export default class NewCommand extends Component {
+export default class ScreenOverlay extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            title: this.props.title,
+            takenNames: this.props.takenNames,
+            nameTaken: false,
             text: "",
-            background: "rgba(0, 0, 0, 0)",
-            takenName: false
+            available: false
         }
-
-        this.handleChangeText = this.handleChangeText.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleHotKey = this.handleHotKey.bind(this);
-        this.handleAccept = this.handleAccept.bind(this);
 
         this.opacity = 5;
 
-        this.hotkey = "";
+        this.handleChangeText = this.handleChangeText.bind(this);
+        this.handleHotKey = this.handleHotKey.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleAccept = this.handleAccept.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleAccept() {
-        if (this.state.text && !this.state.takenName) {
-            this.props.handleSaveCommand(this.state.text);
+        if (this.state.text && this.state.available) {
+            this.props.saveData(this.state.text);
             this.handleClose();
         }
     }
@@ -39,27 +39,28 @@ export default class NewCommand extends Component {
                 })
                 if (count <= 0) {
                     clearInterval(x);
-                    this.props.handleStartNewCommand(false);
+                    this.props.closeScreenOverlay(false);
                 }
             },
             10
         )
     }
 
-    handleClick(elmt) {
-        if (elmt.target.classList.contains('screen-overlay')) this.handleClose();
+    handleHotKey(key) {
+        if (key.key === "Escape") this.handleClose();
+        if (key.key === "Enter") this.handleAccept();
     }
 
     handleChangeText(text) {
         this.setState({
             text,
-            takenName: this.props.takenNames.includes(text) ? true : false
+            nameTaken: this.state.takenNames.includes(text) ? true : false,
+            available: !this.state.takenNames.includes(text) && text ? true : false
         })
     }
 
-    handleHotKey(key) {
-        if (key.key === "Escape") this.handleClose();
-        if (key.key === "Enter") this.handleAccept();
+    handleClick(elmt) {
+        if (elmt.target.classList.contains('screen-overlay')) this.handleClose();
     }
 
     componentDidMount() {
@@ -72,7 +73,7 @@ export default class NewCommand extends Component {
             if (count >= this.opacity) clearInterval(x);
         }, 10);
 
-        this.hotkey = addEventListener('keyup', this.handleHotKey);     
+        addEventListener('keyup', this.handleHotKey);
         document.querySelector('.select-input').focus();
     }
 
@@ -86,19 +87,28 @@ export default class NewCommand extends Component {
                 onClick={this.handleClick}
             >
                 <div className="content">
-                    <h2 className="title">New Command</h2>
+                    <h2 className="title">{this.state.title}</h2>
     
-                    <input type="text" className='input select-input' placeholder='Command name...' onInput={e => this.handleChangeText(e.target.value)} />
+                    <input 
+                        type="text" 
+                        className={`input select-input${!this.state.available ? " warning-color" : ""}`}
+                        placeholder='Name...' 
+                        onInput={e => this.handleChangeText(e.target.value.toUpperCase())} 
+                        value={this.state.text}
+                    />
 
-                    <label className={`warning-text${this.state.takenName ? "" : " hidden"}`}>
+                    <label className={`warning-text${this.state.nameTaken ? "" : " hidden"}`}>
                         Name has already been taken!
                     </label>
 
-                    {this.state.takenName}
-
                     <div className="btns">
                         <input type="button" className='cancel' defaultValue="Cancel" onClick={this.handleClose} />
-                        <input type="button" className='accept' defaultValue="Accept" onClick={this.handleAccept} />
+                        <input 
+                            type="button" 
+                            className={`accept${this.state.available ? " active" : ""}`}
+                            defaultValue="Accept" 
+                            onClick={this.handleAccept} 
+                        />
                     </div>
                 </div>
             </div>

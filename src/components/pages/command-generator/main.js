@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import hotkeys from 'hotkeys-js';
 
 import ActionsBar from './actions-bar';
 import Command from './command';
 import NewCommand from './new-command';
+import ScreenOverlay from './screen-overlay';
 
 export default class CommandGenerator extends Component {
     constructor() {
@@ -12,25 +14,71 @@ export default class CommandGenerator extends Component {
             commands: [
 
             ],
-            activeCommand: 0,
-            creatingCommand: false
+            activeCommand: "",
+            screenOverlay: false
         }
 
         this.handleChangeContent = this.handleChangeContent.bind(this);
         this.handleNewCommand = this.handleNewCommand.bind(this);
         this.handleRemoveCommand = this.handleRemoveCommand.bind(this);
-        this.handleStartNewCommand = this.handleStartNewCommand.bind(this);
+        this.handleOpenOverlay = this.handleOpenOverlay.bind(this);
+        this.handleCloseOverlay = this.handleCloseOverlay.bind(this);
+        this.handleSaveCommand = this.handleSaveCommand.bind(this);
+        this.handleSelectCommand = this.handleSelectCommand.bind(this);
+        this.handleActiveCommand = this.handleActiveCommand.bind(this);
     }
 
-    handleSaveCommand(name) {
-        this.setState({
+    componentDidMount() {
+        hotkeys(
+            'ctrl+c,ctrl+f,ctrl+s',
+            (event, handler) => {
+                event.preventDefault();
+                switch(handler.key) {
+                    case 'ctrl+c': this.handleOpenOverlay();
+                break;
+                    case 'ctrl+f': console.log('You pressed ctrl + f');
+                break;
+                    case 'ctrl+s': console.log('You pressed ctrl + s');
+                break;
+                }
+            }
+        )
+    }
 
+    handleActiveCommand(name) {
+        return name === this.state.activeCommand ? true : false;
+    }
+
+    handleSelectCommand(name) {
+        this.setState({
+            activeCommand: name
         })
     }
 
-    handleStartNewCommand(value) {
+    handleSaveCommand(name) {
+        let commands = this.state.commands;
+
+        commands.push(
+            <Command 
+                key={name} 
+                name={name} 
+                handleRemoveCommand={this.handleRemoveCommand}
+            />
+        )
         this.setState({
-            creatingCommand: value
+            commands
+        })
+    }
+
+    handleCloseOverlay() {
+        this.setState({
+            screenOverlay: false
+        })
+    }
+
+    handleOpenOverlay() {
+        this.setState({
+            screenOverlay: true
         })
     }
 
@@ -38,22 +86,33 @@ export default class CommandGenerator extends Component {
         this.setState({ content })
     }
 
-    handleRemoveCommand(id) {
-        this.setState({
-            commands: this.state.commands.filter(elmt => parseInt(elmt.key) !== id)
-        })
+    handleRemoveCommand(name) {
+        let commands = this.state.commands.filter(command => command.key !== name);
+        this.setState({ commands })
     }
 
     handleNewCommand() {
         this.setState({
-            creatingCommand: true
+            screenOverlay: true
         })
     }
 
     render() {
         return (
             <div className='command-generator'>
-                { this.state.creatingCommand ? <NewCommand handleStartNewCommand={this.handleStartNewCommand} /> : null }
+                { this.state.screenOverlay ? (
+                    // <NewCommand 
+                    //     takenNames={this.state.commands.map(command => command.key)}
+                    //     handleStartNewCommand={this.handleStartNewCommand} 
+                    //     handleSaveCommand={this.handleSaveCommand} 
+                    // />
+                    <ScreenOverlay
+                        title="New Command"
+                        takenNames={this.state.commands.map(command => command.key)}
+                        closeScreenOverlay={this.handleCloseOverlay}
+                        saveData={this.handleSaveCommand}
+                    />
+                    ) : null }
                 
                 <div className="header">
                     <h1>Command Generator</h1>

@@ -1,10 +1,19 @@
 .command {
+    * {
+        user-select: none;
+    }
+
     .main {
         display: grid;
         height: 100px;
         grid-template-columns: 1fr 4fr 1fr;
         align-items: center;
         cursor: pointer;
+        color: $off-black;
+
+        &:is(.active) {
+            background-color: $accept-dark;
+        }
 
         .cmd-icon-wrapper {
             display: flex;

@@ -1,3 +1,7 @@
+.warning-color {
+    color: $warning
+}
+
 .screen-overlay {
     position: absolute;
     left: 0;
@@ -10,7 +14,7 @@
     align-items: center;
     justify-content: center;
 
-    .new-command {
+    .content {
         background-color: white;
         border: 2px solid $gray;
         width: 15%;
@@ -18,8 +22,16 @@
         display: grid;
         align-items: center;
         justify-content: center;
-        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: 3fr 3fr 1fr 3fr;
         text-align: center;
+
+        .warning-text {
+            color: $warning;
+
+            &:is(.hidden) {
+                visibility: hidden;
+            }
+        }
 
         .title {
             margin: 0;
@@ -28,6 +40,10 @@
         .input {
             font-size: 24px;
             text-align: center;
+            
+            &:not(.warning-color) {
+                color: $accept-dark;
+            }
         }
 
         .btns {
@@ -38,6 +54,7 @@
                 cursor: pointer;
                 border: none;
                 padding: 10px 30px;
+                transition: .3s ease-in-out;
 
                 &:hover {
                     filter: brightness(90%);
@@ -50,7 +67,11 @@
             }
 
             .accept {
-                background-color: $accept;
+                background-color: $gray;
+
+                &:is(.active) {
+                    background-color: $accept;
+                }
             }
         }
     }
