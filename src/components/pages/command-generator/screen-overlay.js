@@ -41,7 +41,7 @@ export default class ScreenOverlay extends Component {
                 })
                 if (count <= 0) {
                     clearInterval(x);
-                    this.props.closeScreenOverlay(false);
+                    this.props.handleSetOverlay(false);
                 }
             },
             10

@@ -9,7 +9,7 @@ export default class Command extends Component {
         
         this.state = {
             commandName: this.props.name,
-            contentVisible: true,
+            contentVisible: false,
             content: [],
             active: this.props.activeCommand === this.props.name ? true : false,
             path: `/command-generator/${this.props.name.toLowerCase()}`

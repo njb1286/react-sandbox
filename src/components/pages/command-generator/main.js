@@ -15,17 +15,26 @@ export default class CommandGenerator extends Component {
 
             ],
             activeCommand: "",
-            screenOverlay: false
+            screenOverlay: false,
+            screenOverlayType: "",
+            hasCommand: false
         }
 
         this.handleChangeContent = this.handleChangeContent.bind(this);
         this.handleNewCommand = this.handleNewCommand.bind(this);
         this.handleRemoveCommand = this.handleRemoveCommand.bind(this);
-        this.handleOpenOverlay = this.handleOpenOverlay.bind(this);
-        this.handleCloseOverlay = this.handleCloseOverlay.bind(this);
         this.handleSaveCommand = this.handleSaveCommand.bind(this);
         this.handleSelectCommand = this.handleSelectCommand.bind(this);
         this.handleActiveCommand = this.handleActiveCommand.bind(this);
+        this.handleDetectCommands = this.handleDetectCommands.bind(this);
+        this.handleScreenOverlay = this.handleScreenOverlay.bind(this);
+        this.handleSetOverlay = this.handleSetOverlay.bind(this);
+    }
+    
+    handleDetectCommands() {
+        this.setState({
+            hasCommand: this.state.commands.length > 0 ? true : false
+        })
     }
 
     componentDidMount() {
@@ -34,7 +43,7 @@ export default class CommandGenerator extends Component {
             (event, handler) => {
                 event.preventDefault();
                 switch(handler.key) {
-                    case 'ctrl+c': this.handleOpenOverlay();
+                    case 'ctrl+c': this.handleNewCommand();
                 break;
                     case 'ctrl+f': console.log('You pressed ctrl + f');
                 break;
@@ -42,7 +51,9 @@ export default class CommandGenerator extends Component {
                 break;
                 }
             }
-        )
+        );
+
+        this.handleDetectCommands();
     }
 
     handleActiveCommand(name) {
@@ -67,19 +78,12 @@ export default class CommandGenerator extends Component {
         )
         this.setState({
             commands
-        })
+        },
+        this.handleDetectCommands())
     }
 
-    handleCloseOverlay() {
-        this.setState({
-            screenOverlay: false
-        })
-    }
-
-    handleOpenOverlay() {
-        this.setState({
-            screenOverlay: true
-        })
+    handleSetOverlay(screenOverlay) {
+        this.setState({ screenOverlay });
     }
 
     handleChangeContent(content) {
@@ -88,31 +92,44 @@ export default class CommandGenerator extends Component {
 
     handleRemoveCommand(name) {
         let commands = this.state.commands.filter(command => command.key !== name);
-        this.setState({ commands })
+        this.setState({ 
+            commands,
+            hasCommand: commands.length > 0 ? true : false
+        });
     }
 
     handleNewCommand() {
         this.setState({
-            screenOverlay: true
+            screenOverlay: true,
+            screenOverlayType: (
+                <ScreenOverlay
+                    title="New Command"
+                    takenNames={this.state.commands.map(command => command.key)}
+                    handleSetOverlay={this.handleSetOverlay}
+                    saveData={this.handleSaveCommand}
+                />
+            )
+        })
+    }
+
+    handleScreenOverlay(title, takenNames, handleSetOverlay, saveData) {
+        this.setState({
+            screenOverlay: true,
+            screenOverlayType: (
+                <ScreenOverlay
+                    title={title}
+                    takenNames={takenNames}
+                    handleSetOverlay={handleSetOverlay}
+                    saveData={saveData}
+                />
+            )
         })
     }
 
     render() {
         return (
             <div className='command-generator'>
-                { this.state.screenOverlay ? (
-                    // <NewCommand 
-                    //     takenNames={this.state.commands.map(command => command.key)}
-                    //     handleStartNewCommand={this.handleStartNewCommand} 
-                    //     handleSaveCommand={this.handleSaveCommand} 
-                    // />
-                    <ScreenOverlay
-                        title="New Command"
-                        takenNames={this.state.commands.map(command => command.key)}
-                        closeScreenOverlay={this.handleCloseOverlay}
-                        saveData={this.handleSaveCommand}
-                    />
-                    ) : null }
+                { this.state.screenOverlay ? this.state.screenOverlayType : null }
                 
                 <div className="header">
                     <h1>Command Generator</h1>
@@ -120,7 +137,12 @@ export default class CommandGenerator extends Component {
 
                 <div className="columns">
                     <div className="left">
-                        <ActionsBar handleNewCommand={this.handleNewCommand} />
+                        <ActionsBar 
+                            handleNewCommand={this.handleNewCommand} 
+                            hasCommand={this.state.hasCommand}  
+                            handleScreenOverlay={this.handleScreenOverlay}  
+                            handleSetOverlay={this.handleSetOverlay}
+                        />
                         
                         <div className="commands">
                             {this.state.commands }

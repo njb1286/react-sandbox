@@ -26,6 +26,7 @@
             }
 
             .create-icon-wrapper {
+                color: $gray;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -35,11 +36,14 @@
                 cursor: pointer;
                 user-select: none;
                 border-radius: 5px;
-                color: $off-black;
 
-                &:hover {
-                    background-color: $gray;
-                    color: gold;
+                &:is(.active) {
+                    color: $off-black;
+
+                    &:hover {
+                        background-color: $gray;
+                        color: gold;
+                    }
                 }
             }
         }
