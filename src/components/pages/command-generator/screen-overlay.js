@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { replaceAll } from './helpers';
+
 export default class ScreenOverlay extends Component {
     constructor(props) {
         super(props);
@@ -93,7 +95,7 @@ export default class ScreenOverlay extends Component {
                         type="text" 
                         className={`input select-input${!this.state.available ? " warning-color" : ""}`}
                         placeholder='Name...' 
-                        onInput={e => this.handleChangeText(e.target.value.toUpperCase())} 
+                        onChange={e => this.handleChangeText(replaceAll(e.target.value.toUpperCase(), ' ', '-'))} 
                         value={this.state.text}
                     />
 

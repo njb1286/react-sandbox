@@ -1,0 +1,13 @@
+.arrow {
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid $gray;
+
+    &:is(.expanded) {
+        border-bottom: none;
+        border-top: 20px solid $accept-dark;
+    }
+
+    height: 0;
+    width: 0;
+}
