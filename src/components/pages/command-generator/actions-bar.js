@@ -9,18 +9,18 @@ export default class ActionsBar extends Component {
     constructor(props) {
         super(props);
 
-        this.handleScriptClick = this.handleScriptClick.bind(this);
+        this.handleNewScript = this.handleNewScript.bind(this);
     }
 
-    handleScriptClick() {
-        this.props.handleScreenOverlay(
-            "New Script",
-            [],
-            this.props.handleSetOverlay,
-            () => {
-                
-            }
-        )
+    handleNewScript() {
+        if (this.props.hasCommand) {
+            this.props.handleScreenOverlay(
+                "New Script",
+                [],
+                this.props.handleSetOverlay,
+                this.props.addScript
+            )
+        }
     };
 
     render() {
@@ -43,7 +43,7 @@ export default class ActionsBar extends Component {
                     <div className="bottom">
                         <div 
                             className={iconWrapper}
-                            onClick={this.handleScriptClick}
+                            onClick={this.handleNewScript}
                             title="(ctrl + s)"
                         >
                             <HiOutlineCommandLine className='icon' />

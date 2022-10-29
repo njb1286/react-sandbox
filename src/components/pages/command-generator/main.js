@@ -3,8 +3,9 @@ import hotkeys from 'hotkeys-js';
 
 import ActionsBar from './actions-bar';
 import Command from './command';
-import NewCommand from './new-command';
+import Script from './script';
 import ScreenOverlay from './screen-overlay';
+import LeftColumn from './left';
 
 export default class CommandGenerator extends Component {
     constructor() {
@@ -15,6 +16,7 @@ export default class CommandGenerator extends Component {
 
             ],
             activeCommand: "",
+            activeCommandScripts: [],
             screenOverlay: false,
             screenOverlayType: "",
             hasCommand: false
@@ -29,6 +31,15 @@ export default class CommandGenerator extends Component {
         this.handleDetectCommands = this.handleDetectCommands.bind(this);
         this.handleScreenOverlay = this.handleScreenOverlay.bind(this);
         this.handleSetOverlay = this.handleSetOverlay.bind(this);
+        this.addScript = this.addScript.bind(this);
+    }
+
+    addScript(name) {
+        let activeCommandScripts = this.state.activeCommandScripts;
+        activeCommandScripts.push(
+            <Script key={name} />
+        );
+        this.setState({ activeCommandScripts })
     }
     
     handleDetectCommands() {
@@ -38,21 +49,6 @@ export default class CommandGenerator extends Component {
     }
 
     componentDidMount() {
-        hotkeys(
-            'ctrl+c,ctrl+f,ctrl+s',
-            (event, handler) => {
-                event.preventDefault();
-                switch(handler.key) {
-                    case 'ctrl+c': this.handleNewCommand();
-                break;
-                    case 'ctrl+f': console.log('You pressed ctrl + f');
-                break;
-                    case 'ctrl+s': console.log('You pressed ctrl + s');
-                break;
-                }
-            }
-        );
-
         this.handleDetectCommands();
     }
 
@@ -74,6 +70,7 @@ export default class CommandGenerator extends Component {
                 key={name} 
                 name={name} 
                 handleRemoveCommand={this.handleRemoveCommand}
+                scripts={this.state.activeCommandScripts}
             />
         )
         this.setState({
@@ -136,18 +133,21 @@ export default class CommandGenerator extends Component {
                 </div>
 
                 <div className="columns">
-                    <div className="left">
+                    {/* <div className="left">
                         <ActionsBar 
                             handleNewCommand={this.handleNewCommand} 
                             hasCommand={this.state.hasCommand}  
                             handleScreenOverlay={this.handleScreenOverlay}  
                             handleSetOverlay={this.handleSetOverlay}
+                            addScript={this.addScript}
                         />
                         
                         <div className="commands">
                             {this.state.commands }
                         </div>
-                    </div>
+                    </div> */}
+                    
+                    <LeftColumn />
 
                     <div className="center">
 
